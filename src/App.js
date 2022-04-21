@@ -1,24 +1,21 @@
-import logo from './logo.svg';
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import './App.css';
+import { AuthRoute } from "@/components/AuthRoute";
+
+import Login from "@/pages/Login";
+import GeekLayout from "@/pages/Layout";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Switch>
+          <Route path="/" exact render={() => <Redirect to="/home" />} />
+          <AuthRoute path="/home" component={GeekLayout}></AuthRoute>
+          <Route path="/login" component={Login}></Route>
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
 }
 
