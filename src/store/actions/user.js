@@ -1,5 +1,6 @@
 import { setToken, clearToken, http } from "@/utils";
 
+// 登录
 export const login = (mobile, code) => {
   return async dispatch => {
     const res = await http.post('/authorizations', {
@@ -15,9 +16,16 @@ export const login = (mobile, code) => {
   }
 }
 
+// 退出
 export const logout = ()=>{
   return (dispatch)=>{
     clearToken()
     dispatch({ type: 'login/setToken', payload: "" })
   }
 }
+
+// export const getUserInfo = () => {
+//   return async dispatch => {
+//     const res = await http.get('/user/profile')
+//   }
+// }
