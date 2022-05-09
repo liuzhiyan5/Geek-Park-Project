@@ -18,9 +18,13 @@ import "./index.scss"
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getChannels, getArticles, delArticle } from "@/store/actions";
+import { useHistory } from "react-router-dom";
 // 没图片时默认图片
 import defaultImg from "@/assets/error.png";
+
 import { useState } from 'react';
+import { Channel } from "@/components/Channel";
+
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -28,7 +32,8 @@ const { confirm } = Modal
 
 const Article = () => {
   const dispatch = useDispatch();
-  const { channels, results, total_count, page, per_page } = useSelector((state) => state.article);
+  const history = useHistory()
+  const { results, total_count, page, per_page } = useSelector((state) => state.article);
   const params = useRef({
     page: 1,
     per_page: 20,
@@ -108,7 +113,7 @@ const Article = () => {
       render: (text, record) => (
         <Space size="middle">
           <Button onClick={() => delArticleFn(record.id)} type="link" icon={<DeleteOutlined />} />
-          <Button type="link" icon={<EditOutlined />} />
+          <Button onClick={() => editArticle(record.id)} type="link" icon={<EditOutlined />} />
         </Space>
       ),
     },
@@ -127,6 +132,11 @@ const Article = () => {
         message.success('删除成功')
       },
     })
+  }
+
+  // 编辑
+  const editArticle = id => {
+    history.push(`/home/publish/${id}`)
   }
 
   // 改变筛选条件查询
@@ -181,13 +191,7 @@ const Article = () => {
           </Radio.Group>
         </Form.Item>
         <Form.Item label="频道" name="channel">
-          <Select placeholder="请选择文章频道" style={{ width: 264 }}>
-            {channels.map((item) => (
-              <Option key={item.id} value={item.id}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
+          <Channel width={288} />
         </Form.Item>
         <Form.Item label="日期" name="dateArr">
           <RangePicker />
